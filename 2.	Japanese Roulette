@@ -1,0 +1,60 @@
+2.	Japanese Roulette
+
+import java.util.Scanner;
+
+public class JapaneseRoulette {
+
+	public static void main(String[] args) {
+		
+		Scanner scan = new Scanner(System.in);
+		
+	    String[] cylinder = scan.nextLine().split(" ");
+        String[] players = scan.nextLine().split(" ");
+        scan.close();
+        
+        int position = 0;
+        
+        for (int i = 0; i < cylinder.length; i++) {
+            if (Integer.parseInt(cylinder[i]) == 1) {
+                position = i; break;
+            }
+        }
+
+        for (int i = 0; i < players.length; i++) {
+            String[] currentPlayer = players[i].split(",");
+            int strength  = Integer.parseInt(currentPlayer[0]);
+            String direction = currentPlayer[1];            
+
+            if (direction.equals("Right")) {
+                while (strength  > 0) {
+                    position++;
+                    strength --;
+                    if (position > cylinder.length - 1)
+                        position = 0;
+                }
+
+            } else if (direction.equals("Left")) {
+                while (strength  > 0) {
+                    position--;
+                    strength --;
+                    if (position < 0)
+                        position = cylinder.length - 1;
+                }
+            }
+
+            if (position == 2) {
+                System.out.printf("Game over! Player %d is dead." , i);
+                return;
+            }
+            position++;
+            //Add two checks if current position is outside bounds of array.
+            if (position < 0)
+                position = cylinder.length - 1;
+            if (position > cylinder.length - 1)
+                position = 0;
+        }
+
+        System.out.println("Everybody got lucky!");
+    }
+}
+
