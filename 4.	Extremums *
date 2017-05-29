@@ -1,0 +1,117 @@
+4.	Extremums *
+You are given a sequence of non-negative integers and a command (Min or Max). 
+Depending on the command, you must find the maximum or the minimum sum of numbers formed
+by the rotations of the digits of every element in the sequence. 
+You are allowed to use only rotations to form the numbers (you cannot swap digits, only rotations).
+These rotations are similar to the array rotations e.g.:
+  
+When you are forming the sum you should use all the elements in the sequence. 
+  
+Note! If you rotate 900 → 009, 009 is a valid number which is equal to 9. 
+Input / Constrains
+•	On the first line you will receive integers, separated by a space, in range [0…100000];
+•	On the second line you will receive a string containing the one of the words “Min” or “Max”.
+Output
+•	The numbers which form the result min / max sum separated by comma and space (‘, ’);
+•	A single integer number representing the minimum or the maximum sum of the numbers.
+Examples
+Input	
+255 590 90018 12 10
+
+Output
+Max	552, 905, 90018, 21, 10
+91506
+
+
+Input	
+100 90 811 98 67
+
+
+Output
+Min	1, 9, 118, 89, 67
+284
+
+--------------------------------------------------------------------------------------------
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Extremums {
+
+	public static void main(String[] args) {	
+		
+		Scanner scan = new Scanner(System.in);
+		String[] inputLineOne = scan.nextLine().split(" ");
+		String command = scan.nextLine();
+		scan.close();
+
+		int sum = 0;
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < inputLineOne.length; i++) {
+			char[] arr = inputLineOne[i].toCharArray();
+			int rotateNum = rotation(arr, command);
+			list.add(rotateNum);
+		}
+		// Print result
+		for (int i = 0; i < list.size(); i++) {
+			System.out.print(list.get(i));
+			if (i < list.size() - 1) {
+				System.out.print(", ");
+			}
+			sum += list.get(i);
+		}
+		System.out.println();
+		System.out.println(sum);
+
+	}
+
+	private static int rotation(char[] arr, String command) {
+		String word = "";
+		int number = Integer.parseInt(String.valueOf(arr));
+			int index = 0;
+			int min = number;
+			int max = number;
+			
+
+			while (index < arr.length) {
+				if (command.equals("Min")) {
+					word = makeRotation(arr);
+					number = Integer.parseInt(String.valueOf(word));
+					if (number < min) {
+						min = number;
+					}
+					index++;
+					number =  min;
+				
+				} else {
+					word = makeRotation(arr);
+					number = Integer.parseInt(String.valueOf(word));
+					if (number > max) {
+						max = number;
+					}
+					index++;
+					number = max;
+				}
+			}
+		return number;
+	}
+  
+//rotate whit one index
+
+	private static String makeRotation(char[] arr) {
+		String word = "";
+		for (int i = 0; i < arr.length - 1; i++) {
+			for (int j = arr.length - 1; j > 0; j--) {
+				char temp = arr[j];
+				arr[j] = arr[j - 1];
+				arr[j - 1] = temp;
+			}
+		}
+		for (int i = 0; i < arr.length; i++) {
+			word += arr[i];
+		}
+		return word;
+	}
+}
